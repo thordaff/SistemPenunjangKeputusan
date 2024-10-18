@@ -43,36 +43,24 @@
                     <th><h5 class="fw-bold">Nama</h5></th>
                     <th><h5 class="fw-bold">Penghasilan</h5></th>
                     <th><h5 class="fw-bold">Status Perkawinan</h5></th>
-                    <th><h5 class="fw-bold">Jumlah Tanggunan Anak</h5></th>
+                    <th><h5 class="fw-bold">Jumlah Tanggungan Anak</h5></th>
                     <th><h5 class="fw-bold">Umur</h5></th>
                 </tr>
-                <tr>
-                    <td>
-                        <?foreach($data as $d):?>
-                            <p><?= $d['nama']?></p>
-                        <?endforeach;?>
-                    </td>
-                    <td>
-                        <?foreach($data as $d):?>
-                            <p>Rp. <?= number_format($d['penghasilan'])?></p>
-                        <?endforeach;?>
-                    </td>
-                    <td>
-                        <?foreach($data as $d):?>
-                            <p><?= $d['status']?></p>
-                        <?endforeach;?>
-                    </td>
-                    <td>
-                        <?foreach($data as $d):?>
-                            <p><?= $d['jumlahTanggungan']?></p>
-                        <?endforeach;?>
-                    </td>
-                    <td>
-                        <?foreach($data as $d):?>
-                            <p><?= $d['umur']?></p>
-                        <?endforeach;?>
-                    </td>
-                </tr>
+                <?php if (empty($data)): ?>
+                    <tr>
+                        <td colspan="5">Tidak ada data tersedia.</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($data as $d): ?>
+                    <tr>
+                        <td><?php echo $d['nama']; ?></td>
+                        <td>Rp. <?php echo number_format($d['penghasilan']); ?></td>
+                        <td><?php echo $d['status']; ?></td>
+                        <td><?php echo $d['jumlahTanggungan']; ?></td>
+                        <td><?php echo $d['umur']; ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </table>
             <div class="d-flex mt-3">
                 <div class="button gap-3 ms-auto">
