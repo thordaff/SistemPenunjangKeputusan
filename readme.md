@@ -17,4 +17,4 @@ Catatan
 **************************
 
 Jika terjadi Error saat import database bisa kunjungi
-http://webapp.thoriqdaffa.my.id/SPK
+https://portofolio.thoriqdaffa.my.id/SPK
