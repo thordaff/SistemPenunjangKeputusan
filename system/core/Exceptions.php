@@ -72,8 +72,7 @@ class CI_Exceptions {
 		E_COMPILE_WARNING	=>	'Compile Warning',
 		E_USER_ERROR		=>	'User Error',
 		E_USER_WARNING		=>	'User Warning',
-		E_USER_NOTICE		=>	'User Notice',
-		E_STRICT		=>	'Runtime Notice'
+		E_USER_NOTICE		=>	'User Notice'
 	);
 
 	/**
@@ -84,6 +83,16 @@ class CI_Exceptions {
 	public function __construct()
 	{
 		$this->ob_level = ob_get_level();
+		// Add E_STRICT only when available to avoid deprecation on newer PHP versions
+		if (defined('E_STRICT'))
+		{
+			// Use constant() to avoid direct use of the E_STRICT symbol which may be deprecated
+			$strict = constant('E_STRICT');
+			if ( ! isset($this->levels[$strict]))
+			{
+				$this->levels[$strict] = 'Runtime Notice';
+			}
+		}
 		// Note: Do not log messages from this constructor.
 	}
 

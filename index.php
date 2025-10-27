@@ -53,6 +53,38 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
+ 	// Simple .env loader (no external dependencies)
+ 	// Loads key=value lines from project root `.env` into getenv()/$_ENV/$_SERVER
+ 	$__dotenv_path = __DIR__.DIRECTORY_SEPARATOR.'.env';
+ 	if (is_file($__dotenv_path) && is_readable($__dotenv_path))
+ 	{
+ 		$lines = file($__dotenv_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+ 		foreach ($lines as $line)
+ 		{
+ 			$line = trim($line);
+ 			// Skip comments and invalid lines
+ 			if ($line === '' || strpos($line, '#') === 0 || strpos($line, '=') === false)
+ 			{
+ 				continue;
+ 			}
+ 			list($name, $value) = explode('=', $line, 2);
+ 			$name = trim($name);
+ 			$value = trim($value);
+ 			// Strip surrounding quotes if present
+ 			if ((substr($value, 0, 1) === '"' && substr($value, -1) === '"') || (substr($value, 0, 1) === "'" && substr($value, -1) === "'"))
+ 			{
+ 				$value = substr($value, 1, -1);
+ 			}
+ 			// Do not overwrite existing environment variables
+ 			if (getenv($name) === false)
+ 			{
+ 				putenv("$name=$value");
+ 				$_ENV[$name] = $value;
+ 				$_SERVER[$name] = $value;
+ 			}
+ 		}
+ 	}
+
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
 /*
