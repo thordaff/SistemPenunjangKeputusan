@@ -84,9 +84,14 @@ class CI_Exceptions {
 	{
 		$this->ob_level = ob_get_level();
 		// Add E_STRICT only when available to avoid deprecation on newer PHP versions
-		if (defined('E_STRICT') && ! isset($this->levels[E_STRICT]))
+		if (defined('E_STRICT'))
 		{
-			$this->levels[E_STRICT] = 'Runtime Notice';
+			// Use constant() to avoid direct use of the E_STRICT symbol which may be deprecated
+			$strict = constant('E_STRICT');
+			if ( ! isset($this->levels[$strict]))
+			{
+				$this->levels[$strict] = 'Runtime Notice';
+			}
 		}
 		// Note: Do not log messages from this constructor.
 	}
