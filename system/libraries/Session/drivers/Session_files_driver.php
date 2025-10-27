@@ -132,6 +132,13 @@ class CI_Session_files_driver extends CI_Session_driver implements CI_Session_dr
 	 */
 	public function open($save_path, $name)
 	{
+		// If an empty save path was provided (config not set and php.ini empty),
+		// default to a system temp directory to avoid mkdir('') errors.
+		if (empty($save_path))
+		{
+			$save_path = rtrim(sys_get_temp_dir(), '/\\').DIRECTORY_SEPARATOR.'ci_sessions';
+		}
+
 		if ( ! is_dir($save_path))
 		{
 			if ( ! mkdir($save_path, 0700, TRUE))
